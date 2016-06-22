@@ -50,13 +50,17 @@ export function getComponentModule(elementName: string, namespace: string, attri
 
     try {
         if (isString(namespace)) {
-            var pathInsideTNSModules = path.join(knownFolders.currentApp().path, "tns_modules", namespace);
-
-            if (Folder.exists(pathInsideTNSModules)) {
-                moduleId = pathInsideTNSModules;
+            if (global.moduleExists(namespace)) {
+                moduleId = namespace;
             } else {
-                // We expect module at root level in the app.
-                moduleId = path.join(knownFolders.currentApp().path, namespace);
+                var pathInsideTNSModules = path.join(knownFolders.currentApp().path, "tns_modules", namespace);
+
+                if (Folder.exists(pathInsideTNSModules)) {
+                    moduleId = pathInsideTNSModules;
+                } else {
+                    // We expect module at root level in the app.
+                    moduleId = path.join(knownFolders.currentApp().path, namespace);
+                }
             }
         }
 
